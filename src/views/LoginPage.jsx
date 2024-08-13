@@ -1,7 +1,11 @@
 import FullPageLoader from "../components/FullPageLoader.jsx";
 import { useState } from "react";
 import { auth } from "../firebase/config.js";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 
 function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -10,6 +14,7 @@ function LoginPage() {
     email: "",
     password: "",
   });
+  const [error, setError] = useState("");
 
   function handleCredentials(e) {
     setUserCredentials({
@@ -19,8 +24,10 @@ function LoginPage() {
     console.log(userCredentials);
   }
 
+  // Handle SignUp
   function handleSignUp(e) {
     e.preventDefault();
+    setError("");
     setIsLoading(true);
 
     createUserWithEmailAndPassword(
@@ -33,13 +40,36 @@ function LoginPage() {
         console.log(user);
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+        setError(error.message);
       })
       .finally(() => {
         setIsLoading(false);
       });
+  }
+
+  //Handle Log In
+  function handleLogIn(e) {
+    e.preventDefault();
+    setError("");
+    signInWithEmailAndPassword(
+      auth,
+      userCredentials.email,
+      userCredentials.password
+    )
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(user);
+      })
+      .catch((error) => {
+        setError(error.message);
+      });
+  }
+
+  // Handle Forget Password
+  function handlePasswordReset() {
+    const email = prompt("Please enter your email");
+    sendPasswordResetEmail(auth, email);
+    alert("Email sent! Check your inbox for password reset instruction");
   }
 
   return (
@@ -84,14 +114,19 @@ function LoginPage() {
               />
             </div>
             {loginType === "login" ? (
-              <button className="active btn btn-block">Login</button>
+              <button onClick={handleLogIn} className="active btn btn-block">
+                Login
+              </button>
             ) : (
               <button onClick={handleSignUp} className="active btn btn-block">
                 Sign Up
               </button>
             )}
+            {error && <div className="error">{error}</div>}
 
-            <p className="forgot-password">Forgot Password?</p>
+            <p onClick={handlePasswordReset} className="forgot-password">
+              Forgot Password?
+            </p>
           </form>
         </section>
       </div>
