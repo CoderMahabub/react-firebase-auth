@@ -7,7 +7,7 @@ export const booksSlice = createSlice({
       id: 1,
       title: "A Short History of Europe",
       cover:
-        "https://printpress.cmsmasters.net/default/wp-content/uploads/sites/11/2019/05/printpress-product-6-540x861.jpg",
+        "https://printpress.cmsmasters.net/default/wp-content/uploads/sites/11/2019/05/printpress-product-2-540x861.jpg",
       isRead: true,
       author: "Simon Jenkins",
       synopsis: "In this dazzling new history, bestselling author Simon Jenkins grippingly tells the story of its evolution from warring peoples to peace, wealth and freedom - a story that twists and turns from Greece and Rome, through the Dark Ages, the Reformation and the French Revolution, to the Second World War and up to the present day."
@@ -47,14 +47,14 @@ export const booksSlice = createSlice({
       books.push(newBook);
     },
     eraseBook: (books, action) => {
-        return books.filter(book => book.id != action.payload);
+      return books.filter(book => book.id != action.payload);
     },
     toggleRead: (books, action) => {
-        books.map(book => {
-          if (book.id == action.payload) {
-            book.isRead = !book.isRead;
-          }
-        });
+      books.map(book => {
+        if (book.id == action.payload) {
+          book.isRead = !book.isRead;
+        }
+      });
     }
   }
 })

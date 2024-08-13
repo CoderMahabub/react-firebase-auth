@@ -6,8 +6,11 @@ import {
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
 } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { setUser } from "../store/usersSlice.js";
 
 function LoginPage() {
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [loginType, setLoginType] = useState("login");
   const [userCredentials, setUserCredentials] = useState({
@@ -38,6 +41,12 @@ function LoginPage() {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log(user);
+        dispatch(
+          setUser({
+            id: userCredential.user.uid,
+            email: userCredential.user.email,
+          })
+        );
       })
       .catch((error) => {
         setError(error.message);
@@ -59,6 +68,12 @@ function LoginPage() {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log(user);
+        dispatch(
+          setUser({
+            id: userCredential.user.uid,
+            email: userCredential.user.email,
+          })
+        );
       })
       .catch((error) => {
         setError(error.message);
@@ -88,10 +103,10 @@ function LoginPage() {
               Login
             </button>
             <button
-              className={`btn ${loginType === "signup" ? "selected" : ""}`}
-              onClick={() => setLoginType("signup")}
+              className={`btn ${loginType === "signUp" ? "selected" : ""}`}
+              onClick={() => setLoginType("signUp")}
             >
-              Signup
+              SignUp
             </button>
           </div>
           <form className="add-form login">
