@@ -7,6 +7,8 @@ import {
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
   onAuthStateChanged,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { setUser } from "../store/usersSlice.js";
@@ -101,6 +103,20 @@ function LoginPage() {
     sendPasswordResetEmail(auth, email);
     alert("Email sent! Check your inbox for password reset instruction");
   }
+  const provider = new GoogleAuthProvider();
+  const handleGoogleLogIn = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        console.log(token);
+        const user = result.user;
+        console.log(user);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
 
   return (
     <>
@@ -110,6 +126,17 @@ function LoginPage() {
         <section>
           <h1>Welcome to the Book App</h1>
           <p>Login or create an account to continue</p>
+          <div>
+            <button onClick={handleGoogleLogIn} className=" btn btn-block">
+              Login with Google{" "}
+              <img
+                style={{ width: "15px" }}
+                src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/google-icon.png"
+                alt="Google Icon"
+              />
+            </button>
+            <br />
+          </div>
           <div className="login-type">
             <button
               className={`btn ${loginType === "login" ? "selected" : ""}`}

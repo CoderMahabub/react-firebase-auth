@@ -468,8 +468,14 @@ table tr th {
   text-align: left;
 }
 
-
-
+.login-with-logo{
+  width: 100px;
+  display: flex;
+  justify-content: space-between;
+}
+.login-with-logo p{
+  width: 50%;
+}
 
 
 @media (max-width: 768px) {
