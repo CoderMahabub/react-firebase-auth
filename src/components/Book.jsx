@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toggleRead } from "../store/booksSlice.js";
+import PropTypes from "prop-types";
 
 function Book({ book }) {
   const dispatch = useDispatch();
@@ -9,6 +10,10 @@ function Book({ book }) {
     e.preventDefault();
     dispatch(toggleRead(id));
   }
+
+  Book.propTypes = {
+    book: PropTypes.any.isRequired,
+  };
 
   return (
     <>
@@ -21,7 +26,15 @@ function Book({ book }) {
           )}
 
           <div className="book-cover">
-            <img src={book.cover} />
+            <img
+              src={book.cover}
+              alt={`${book.title} cover`}
+              style={{ width: "100%", height: "auto" }} // Adjust styles as needed
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = "https://via.placeholder.com/150";
+              }}
+            />
 
             <button
               onClick={(e) => {
