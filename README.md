@@ -23,8 +23,7 @@ The "Book-List" project is a web application built using React.js for the front-
 
 - **React:** For building the user interface.
 - **React Router:** Route management.
-- **Firebase:** For authentication.
-- **Firebase:** For hosting the live demo.
+- **Firebase:** For authentication and hosting the live demo.
 
 ## Getting Started
 
