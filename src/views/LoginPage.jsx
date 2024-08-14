@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import FullPageLoader from "../components/FullPageLoader.jsx";
 import { useState } from "react";
 import { auth } from "../firebase/config.js";
@@ -5,6 +6,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
+  onAuthStateChanged,
 } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { setUser } from "../store/usersSlice.js";
@@ -19,6 +21,16 @@ function LoginPage() {
   });
   const [error, setError] = useState("");
 
+  //State Changed
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      dispatch(setUser({ id: user.uid, email: user.email }));
+    } else {
+      dispatch(setUser(null));
+    }
+  });
+
+  // Handle Credentials
   function handleCredentials(e) {
     setUserCredentials({
       ...userCredentials,
