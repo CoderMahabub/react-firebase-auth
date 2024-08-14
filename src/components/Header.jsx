@@ -1,16 +1,21 @@
 import { NavLink } from "react-router-dom";
-import { getAuth, signOut } from "firebase/auth";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase/config";
+import { useDispatch } from "react-redux";
+import { setUser } from "../store/usersSlice.js";
 
 function Header({ pageTitle }) {
+  const dispatch = useDispatch();
   function handleLogOut() {
-    const auth = getAuth();
-    signOut(auth)
-      .then(() => {
-        // Sign-out successful.
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
+    if (confirm("Are you sure you want to logout")) {
+      signOut(auth)
+        .then(() => {
+          dispatch(setUser(null));
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    }
   }
 
   return (
